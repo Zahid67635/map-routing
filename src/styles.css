@@ -1,1 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
+/* Leaflet CSS */
+@import 'leaflet/dist/leaflet.css';
+
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    color: #374151;
+}
+
+/* Custom Leaflet marker styles */
+.custom-marker {
+    background: none;
+    border: none;
+}
+
+.marker-container {
+    width: 30px;
+    height: 30px;
+    background: #e9ebee;
+    border: 3px solid black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.marker-container:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.marker-number {
+    color: black;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.marker-popup {
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+
