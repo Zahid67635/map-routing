@@ -1,3 +1,8 @@
+.map {
+    height: 100%;
+    width: 100%;
+}
+
 .map-container {
     height: 100vh;
     position: relative;
@@ -32,6 +37,24 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+.edit-btn {
+    background-color: #2563eb;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.delete-btn {
+    background-color: #dc2626;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #b91c1c;
+}
+
 .point-count {
     background: white;
     padding: 8px 16px;
@@ -39,11 +62,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     font-weight: 500;
     color: #374151;
-}
-
-.map {
-    height: 100%;
-    width: 100%;
 }
 
 

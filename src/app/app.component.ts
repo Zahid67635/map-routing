@@ -40,6 +40,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     this.initMap();
+
+    (window as any).deletePoint = (pointId: string) => {
+       this.deletePoint(pointId);
+    };
   }
 
   ngOnDestroy() {
@@ -91,7 +95,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       this.markers.push(marker);
       marker.addTo(this.map);
     });
-
   }
 
   createMarker(point: RoutePoint): L.Marker {
@@ -112,9 +115,36 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       draggable: true,
     });
 
+    marker.bindPopup(`
+      <div class="marker-popup">
+        <strong>Point ${point.number}</strong><br>
+        Lat: ${point.latitude.toFixed(6)}<br>
+        Lng: ${point.longitude.toFixed(6)}<br>
+        Height: ${point.height}m
+        <br><br>
+        <button onclick="window.editPoint('${
+          point.id
+        }')" class="popup-btn edit-btn">Edit</button>
+        <button onclick="window.deletePoint('${
+          point.id
+        }')" class="popup-btn delete-btn">Delete</button>
+      </div>
+    `);
+
+    // Handle marker drag
+    marker.on('dragend', (e) => {
+      const newLatLng = e.target.getLatLng();
+      if (point.id) {
+        this.mapService.movePoint(point.id, newLatLng.lat, newLatLng.lng);
+      }
+    });
+
     return marker;
   }
-
+  
+  private deletePoint(pointId: string) {
+    this.mapService.deletePoint(pointId);
+  }
   private clearMap() {
     // Remove existing markers
     this.markers.forEach((marker) => {
