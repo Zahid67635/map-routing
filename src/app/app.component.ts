@@ -95,6 +95,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       this.markers.push(marker);
       marker.addTo(this.map);
     });
+
+    if (this.points.length > 1) {
+      this.createRouteLine();
+    }
   }
 
   createMarker(point: RoutePoint): L.Marker {
@@ -141,7 +145,45 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     return marker;
   }
-  
+
+  private createRouteLine() {
+    const latlngs: L.LatLngExpression[] = this.points.map((point) => [
+      point.latitude,
+      point.longitude,
+    ]);
+    this.routeLine = L.polyline(latlngs, {
+      color: 'red',
+      weight: 3,
+    }).addTo(this.map);
+
+    this.addDirectionArrows();
+  }
+
+  private addDirectionArrows() {
+    for (let i = 0; i < this.points.length - 1; i++) {
+      const start = L.latLng(this.points[i].latitude, this.points[i].longitude);
+      const end = L.latLng(
+        this.points[i + 1].latitude,
+        this.points[i + 1].longitude
+      );
+
+      const arrowLat = start.lat + 0.8 * (end.lat - start.lat);
+      const arrowLng = start.lng + 0.8 * (end.lng - start.lng);
+
+      const angle =
+        (Math.atan2(end.lng - start.lng, end.lat - start.lat) * 180) / Math.PI;
+
+      const arrowIcon = L.divIcon({
+        className: 'direction-arrow',
+        html: `<div style="transform: rotate(${angle}deg);">></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+      });
+
+      L.marker([arrowLat, arrowLng], { icon: arrowIcon }).addTo(this.map);
+    }
+  }
+
   private deletePoint(pointId: string) {
     this.mapService.deletePoint(pointId);
   }
