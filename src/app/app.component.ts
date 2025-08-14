@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
 import { MapService } from './services/map-services';
 import { CommonModule } from '@angular/common';
+import { PointEditModalComponent } from './point-edit-modal/point-edit-modal.component';
 
 export interface RoutePoint {
   number: number;
@@ -15,7 +15,7 @@ export interface RoutePoint {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [ CommonModule, PointEditModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -42,7 +42,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.initMap();
 
     (window as any).deletePoint = (pointId: string) => {
-       this.deletePoint(pointId);
+      this.deletePoint(pointId);
+    };
+
+    (window as any).editPoint = (pointId: string) => {
+      this.editPoint(pointId);
     };
   }
 
@@ -79,7 +83,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private updateMapDisplay() {
-    // If map is not initialized, do nothing
     if (!this.map) {
       return;
     }
@@ -102,7 +105,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   createMarker(point: RoutePoint): L.Marker {
-    // Custom icon
     const customIcon = L.divIcon({
       className: 'custom-marker',
       html: `
@@ -210,5 +212,23 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.map.removeLayer(layer);
       }
     });
+  }
+
+  private editPoint(pointId: string) {
+    const point = this.points.find((p) => p.id === pointId);
+    if (point) {
+      this.selectedPoint = point;
+      this.isModalVisible = true;
+    }
+  }
+
+  updatePoint(updatedPoint: RoutePoint) {
+    this.mapService.updatePoint(updatedPoint);
+    this.closeModal();
+  }
+
+  closeModal() {
+    this.isModalVisible = false;
+    this.selectedPoint = null;
   }
 }

@@ -11,8 +11,7 @@
     </div>
   
     <div id="map" class="map"></div>
-  
+  <app-point-edit-modal [point]="selectedPoint" [isVisible]="isModalVisible" (close)="closeModal()"
+    (save)="updatePoint($event)"></app-point-edit-modal>
   </div>
 </main>
-
-<router-outlet />

@@ -1,0 +1,41 @@
+<div class="modal-overlay" *ngIf="isVisible" (click)="onOverlayClick($event)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Edit Route Point</h3>
+            <button class="close-button" (click)="onClose()">
+                <span>X</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="pointNumber">Point Number</label>
+                <input id="pointNumber" type="number" [(ngModel)]="editedPoint.number"
+                    class="form-control" placeholder="Enter point number"/>
+            </div>
+
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input id="latitude" type="number" step="any" [(ngModel)]="editedPoint.latitude" class="form-control"
+                    placeholder="Enter latitude" />
+            </div>
+
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+                <input id="longitude" type="number" step="any" [(ngModel)]="editedPoint.longitude" class="form-control"
+                    placeholder="Enter longitude" />
+            </div>
+
+            <div class="form-group">
+                <label for="height">Height (m)</label>
+                <input id="height" type="number" step="any" [(ngModel)]="editedPoint.height" class="form-control"
+                    placeholder="Enter height in meters" />
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+            <button class="btn" (click)="onSave()">Save Changes</button>
+        </div>
+    </div>
+</div>

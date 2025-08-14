@@ -33,10 +33,44 @@ export class MapService {
     const currentPoints = this.pointsSubject.value;
     const index = currentPoints.findIndex((p) => p.id === updatedPoint.id);
     if (index !== -1) {
-      const newPoints = [...currentPoints];
-      newPoints[index] = updatedPoint;
-      this.pointsSubject.next(newPoints);
+      // Check if point number changed and handle renumbering
+      const oldPoint = currentPoints[index];
+      if (oldPoint.number !== updatedPoint.number) {
+        this.renumberPoints(updatedPoint);
+      } else {
+        const newPoints = [...currentPoints];
+        newPoints[index] = updatedPoint;
+        this.pointsSubject.next(newPoints);
+      }
     }
+  }
+
+  private renumberPoints(updatedPoint: RoutePoint): void {
+    const currentPoints = this.pointsSubject.value;
+    const oldIndex = currentPoints.findIndex((p) => p.id === updatedPoint.id);
+    const newNumber = updatedPoint.number;
+
+    if (oldIndex === -1) return;
+
+    // Ensure the new number is within valid range
+    const maxNumber = currentPoints.length;
+    const clampedNumber = Math.max(1, Math.min(newNumber, maxNumber));
+    updatedPoint.number = clampedNumber;
+
+    const pointsWithoutUpdated = currentPoints.filter(
+      (p) => p.id !== updatedPoint.id
+    );
+
+    // Insert the updated point at the new position (array index = number - 1)
+    const newPoints = [...pointsWithoutUpdated];
+    newPoints.splice(clampedNumber - 1, 0, updatedPoint);
+
+    const renumberedPoints = newPoints.map((point, index) => ({
+      ...point,
+      number: index + 1,
+    }));
+
+    this.pointsSubject.next(renumberedPoints);
   }
 
   movePoint(pointId: string, newLat: number, newLong: number): void {
