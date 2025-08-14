@@ -20,7 +20,7 @@ export class MapService {
   }
 
   addPoint(point: RoutePoint): void {
-    const currentPoints = this.pointsSubject.value;
+    const currentPoints = this.getPoints();
     const newPoint = {
       ...point,
       number: currentPoints.length + 1,
@@ -30,7 +30,7 @@ export class MapService {
   }
 
   updatePoint(updatedPoint: RoutePoint): void {
-    const currentPoints = this.pointsSubject.value;
+    const currentPoints = this.getPoints();
     const index = currentPoints.findIndex((p) => p.id === updatedPoint.id);
     if (index !== -1) {
       // Check if point number changed and handle renumbering
@@ -46,7 +46,7 @@ export class MapService {
   }
 
   private renumberPoints(updatedPoint: RoutePoint): void {
-    const currentPoints = this.pointsSubject.value;
+    const currentPoints = this.getPoints();
     const oldIndex = currentPoints.findIndex((p) => p.id === updatedPoint.id);
     const newNumber = updatedPoint.number;
 
@@ -74,7 +74,7 @@ export class MapService {
   }
 
   movePoint(pointId: string, newLat: number, newLong: number): void {
-    const currentPoints = this.pointsSubject.value;
+    const currentPoints = this.getPoints();
     const index = currentPoints.findIndex((p) => p.id === pointId);
     if (index !== -1) {
       const newPoints = [...currentPoints];
@@ -87,7 +87,7 @@ export class MapService {
     }
   }
   deletePoint(pointId: string): void {
-    const currentPoints = this.pointsSubject.value;
+    const currentPoints = this.getPoints();
     const filteredPoints = currentPoints.filter((p) => p.id !== pointId);
 
     const renumberedPoints = filteredPoints.map((point, index) => ({
@@ -96,6 +96,11 @@ export class MapService {
     }));
 
     this.pointsSubject.next(renumberedPoints);
+  }
+
+  sendPointsToServer(): void {
+    const points = this.getPoints();
+    alert('Send to server successfully!\n\n'+JSON.stringify(points));
   }
 }
 

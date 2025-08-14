@@ -15,7 +15,7 @@ export interface RoutePoint {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ CommonModule, PointEditModalComponent],
+  imports: [CommonModule, PointEditModalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -230,5 +230,17 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   closeModal() {
     this.isModalVisible = false;
     this.selectedPoint = null;
+  }
+
+  sendToServer() {
+    try {
+      if (this.points.length === 0) {
+        alert('No points to send!');
+        return;
+      }
+      this.mapService.sendPointsToServer();
+    } catch (error) {
+      alert('Failed to send points to server: ' + error);
+    }
   }
 }
