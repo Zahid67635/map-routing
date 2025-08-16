@@ -1,14 +1,20 @@
 # MapRouting
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+It is an Angular application that allows the user to have a map (utilizing Leaflet to work 
+with the map), on which they can set route points. Lines connect the points, and an arrow indicates the direction of movement. 
+    ● Points are movable, added, and deleted (using Leaflet plugins). 
+    ● When points are deleted, the numbers must be updated so the points remain in the correct order. 
+Each point has the following parameters: 
+    ● Number 
+    ● Latitude 
+    ● Longitude 
+    ● Height 
+When clicking on a point, a window should appear with the possibility of editing the point parameters. 
+The list of points with parameters must be sent via the service to the server (only the sending code). 
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
@@ -22,6 +28,3 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
